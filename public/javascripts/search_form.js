@@ -6,12 +6,11 @@ $(document).ready( function () {
     L.mapquest.key = 'h7vSDMtyh7vIapJaASz9DQHmzH4Au9Od';
     let fg = L.featureGroup();
     let map = L.mapquest.map('map', {
-        center: [40.746056, -73.953298],
+        center: [48.853, 2.35],
         layers: [L.mapquest.tileLayer('map'),fg],
-        zoom: 12
+        zoom: 11
     });
     let markers = [];
-    //L.Marker( [ 40.746056, -73.953298 ]).addTo(map);
 
     map.addControl(L.mapquest.control());
 
@@ -34,9 +33,12 @@ $(document).ready( function () {
     });
 
     function search(type,coord){
-        const template = '<li>'
+        const employeeTemplate = '<li>'
             +'<h4></h4>'
-            +'</li>'
+            +'</li>';
+        const companyTemplate = '<li>'
+            +'<h4></h4>'
+            +'</li>';
         if (type==="map"){
             $("#coords").val(JSON.stringify(coord));
         }else {
@@ -56,17 +58,24 @@ $(document).ready( function () {
             markers=[];
             data.forEach((doc)=>{
                 //Affichage des résultats
-                let li=$(template);
-                $(li).children("h4").text(doc._source.name) ;
-                $("#result ol").append($(li));
+                let li;
+                switch (doc._index){
+                    case 'employees':
+                        li=$(employeeTemplate);
+                        $(li).children("h4").text(doc._source.name.first+" "+doc._source.name.last) ;
+                        $("#result ol").append($(li));
 
-                markers.push(new L.marker([ doc._source.address.coord[1], doc._source.address.coord[0] ])
-                    .addTo(map)
-                    .bindPopup('<strong>' + doc._source.name + '</strong><br/>'+doc._source.cuisine));
-                //Affichage sur la carte
+                        break;
+                    case 'companies':
+                        li=$(companyTemplate);
+                        $(li).children("h4").text(doc._source.company) ;
+                        $("#result ol").append($(li));
+                        markers.push(new L.marker([ doc._source.coord.lat, doc._source.coord.lon ])
+                            .addTo(map)
+                            .bindPopup('<strong>' + doc._source.company + '</strong><br/>' +doc._source.industry));
 
-                //marker.bindPopup('<strong>' + 'Restaurant' + '</strong><br/>is located here.');
-
+                        break;
+                }
             });
         });
     }

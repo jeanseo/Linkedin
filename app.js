@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const elasticsearch = require('elasticsearch');
 const path = require('path');
 const app = express();
-const {listRestaurants} = require('./routes/crud');
+const {listEmployees} = require('./routes/crud');
 const { addRestaurant, addRestaurantPage, deleteRestaurant, editRestaurant, editRestaurantPage, getCuisineList} = require('./routes/restaurants');
 const {searchIndex, searchActionPage} = require('./routes/search');
 const port = 3000;
@@ -23,7 +23,7 @@ app.use(fileUpload()); // configure fileupload
 
 // routes for the app
 
-app.get('/crud', listRestaurants);
+app.get('/admin/employees', listEmployees);
 app.get('/add', addRestaurantPage);
 app.get('/edit/:id', editRestaurantPage);
 app.get('/delete/:id', deleteRestaurant);

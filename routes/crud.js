@@ -1,5 +1,5 @@
 module.exports = {
-  listRestaurants: (req, res) => {
+  listEmployees: (req, res) => {
 
     let client = require('../connection.js');
     //on récupère le nombre de réponses

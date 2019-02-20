@@ -9,7 +9,14 @@
                     </div>
                     <!--end of col-->
                     <div class="col">
-                        <input class="form-control form-control-lg form-control-borderless" name="searchText" type="search" placeholder="Search restaurants">
+                            <input class="form-control form-control-lg form-control-borderless" name="searchText" type="search" placeholder="Search">
+                    </div>
+                    <div class="col">
+                        <select class="form-control form-control-lg form-control-borderless custom-select" id="index-select" name="index_select">
+                                <option value="all">All</option>
+                                <option value="employees">Employees</option>
+                                <option value="companies">Companies</option>
+                            </select>
                     </div>
                     <!--end of col-->
                     <div class="col-auto">
@@ -23,11 +30,11 @@
     </div>
     <div class="row">
         <div class="col-2" id="search-options">
-            <div id="borough">
-                <% include partials/search-boroughs.ejs %>
+            <div id="industry">
+                <% include partials/search-industry.ejs %>
             </div>
-            <div id="cuisines">
-                <% include partials/search-categories.ejs %>
+            <div id="job_titles">
+                <% include partials/search-job_titles.ejs %>
             </div>
         </div>
         <div class="col-7" id="result"><ol></ol></div>

@@ -1,0 +1,6 @@
+<form id="industry">
+    <%industryList.forEach((industry)=>{ %>
+    <label><input type="checkbox" name="industry" value="<%=industry.key.toLowerCase()%>"><%=industry.key%>
+        <span class="badge badge-light"><%=industry.doc_count%></span></label>
+    <% }); %>
+</form>

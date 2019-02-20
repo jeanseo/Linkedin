@@ -1,0 +1,6 @@
+<form id="job_title">
+    <%jobTitleList.forEach((jobTitle)=>{ %>
+    <label><input type="checkbox" name="jobTitle" value="<%=jobTitle.key.toLowerCase()%>"><%=jobTitle.key%>
+            <span class="badge badge-light"><%=jobTitle.doc_count%></span></label>
+        <% }); %>
+</form>

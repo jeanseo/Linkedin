@@ -3,21 +3,22 @@ module.exports = {
         //Requête de récupération des types de cuisine
         let client = require('../connection.js');
         client.search({
-            index: 'restaurants',
+            index: 'companies,employees',
             type: '_doc',
             body: {
                 "aggs": {
-                    "cuisine_bucket": {
+                    "industry_bucket": {
                         "terms": {
-                            "field": "cuisine",
+                            "field": "industry",
                             "size": 15
                         }
                     },
-                    "borough_bucket": {
+                    "job_title_bucket": {
                         "terms": {
-                            "field": "borough.raw"
+                            "field": "job_title",
+                            "size": 15
                         }
-                    },
+                    }
                 },
                 "size": 0
             }
@@ -26,10 +27,11 @@ module.exports = {
                 if(error){
                     console.log("search error: "+error)
                 }else {
+                    console.log(response.aggregations.industry_bucket.buckets);
                     res.render('search.ejs', {
-                        title: "RR - Restos Ratings | Search Restaurants",
-                        cuisineList : response.aggregations.cuisine_bucket.buckets,
-                        boroughList : response.aggregations.borough_bucket.buckets
+                        title: "Linquedine",
+                        industryList : response.aggregations.industry_bucket.buckets,
+                        jobTitleList : response.aggregations.job_title_bucket.buckets
                     });
                 }
         });
@@ -41,23 +43,28 @@ module.exports = {
         let body = bodybuilder();
         //Gestion de la recherche par mots clés
         if (req.body.searchText !== ""){
-            body.query("match","name",req.body.searchText);
+            body.query("multi_match",{
+                query: req.body.searchText+"*",
+                fields: ["name.last^2","name.first","company^5","company.name^2","industry^2","company.industry","job_title"],
+                fuzziness : "auto"
+            });
         }
 
+
         //Gestion de la recherche par filtres
-        if (req.body.cuisine != null){
-            if (Array.isArray(req.body.cuisine)) {
-                body.filter("terms","cuisine",req.body.cuisine);
+        if (req.body.industry != null){
+            if (Array.isArray(req.body.industry)) {
+                body.filter("terms","industry",req.body.industry);
             } else {
-                body.filter("term","cuisine",req.body.cuisine);
+                body.filter("term","industry",req.body.industry);
             }
         }
 
-        if (req.body.borough != null){
-            if (Array.isArray(req.body.borough)) {
-                body.filter("terms","borough",req.body.borough);
+        if (req.body.jobTitle != null){
+            if (Array.isArray(req.body.jobTitle)) {
+                body.filter("terms","job_title",req.body.jobTitle);
             } else {
-                body.filter("term","borough",req.body.borough);
+                body.filter("term","job_title",req.body.jobTitle);
             }
         }
 
@@ -74,16 +81,27 @@ module.exports = {
                     lon : coords._northEast.lng
                 }
             };
-            body.andFilter("geo_bounding_box","address.coord",box);
+            body.andFilter("geo_bounding_box","coord",box);
         }
 
 
-        // TODO: Gestion du tri par moyenne
-
+        let index;
+        switch (req.body.index_select) {
+            case  ('all'):
+                index = "companies,employees";
+                break;
+            case ('employees'):
+                index = "employees";
+                break;
+            case  ('companies'):
+                index = "companies";
+                break;
+        }
         body.size(20);
         let bodyText = body.build();
+        console.log(JSON.stringify(bodyText));
         client.search({
-                index: 'restaurants',
+                index: index,
                 type: '_doc',
                 body: bodyText
         },function (error, response,status){
