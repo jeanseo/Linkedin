@@ -27,7 +27,7 @@ app.get('/admin/employees', listEmployees);
 app.get('/admin/employees/add', addEmployeePage);
 app.get('/admin/employees/edit/:id', editEmployeesPage);
 app.get('/admin/employees/delete/:id', deleteEmployee);
-app.post('/add', editEmployees);
+app.post('/admin/employees/add', editEmployees);
 app.post('/admin/employees/edit/:id', editEmployees);
 app.get('/', searchIndex);
 app.post('/api/search', searchActionPage);

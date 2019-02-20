@@ -4,8 +4,8 @@ $(document).ready( function () {
         console.log($(this).siblings("ul"));
         $(this).siblings("ul").append(
             "<li class=\"list-inline-item col-3\">" +
-            "<input class='form-control' name='id' placeholder='grade' required>" +
-            "<input class='form-control' name='old_job_title' placeholder='score' required>" +
+            "<input class='form-control' name='id' placeholder='id Company' required>" +
+            "<input class='form-control' name='old_job_title' placeholder='Job title' required>" +
             "<button class=\"remove-grade btn \" type=\"button\">-</button>"+
             "</li>"
         );

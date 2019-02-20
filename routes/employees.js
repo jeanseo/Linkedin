@@ -50,26 +50,27 @@ module.exports = {
         let companyId = req.body.companyId;
         let companyName = req.body.companyName;
         let ids = req.body.id;
-        let old_job_title = req.body.old_job_title;
+        let old_job_titles = req.body.old_job_title;
         let employeeId = req.params.id;
 
         //Recuperation des anciennes sociétés dans un tableau
         let old_jobs=[];
-        if (ids!=null && old_job_title!=null){
+        if (ids!=null && old_job_titles!=null){
             if (!Array.isArray(req.body.id)) {
-                old_jobs = {
+                old_jobs[0] = {
                     id: ids,
-                    old_job_title: old_job_title
+                    job_title: old_job_titles
                 };
             }else{
                 req.body.id.forEach((id, index) => {
                     old_jobs[index] = {
                         id: ids[index],
-                        job_title: old_job_title[index]
+                        job_title: old_job_titles[index]
                         };
                 });
             }
         }
+        console.log(old_jobs);
         const client = require('../connection.js');
         if(employeeId!==undefined){
             //update
@@ -102,16 +103,22 @@ module.exports = {
         }else{
             //ajout
             let query = {
-                "address": {
-                    "building":building,
-                    "street" : street,
-                    "zipcode" : zipCode
+                "name": {
+                    "first":first_name,
+                    "last" : last_name
                 },
-                "borough": borough,
-                "cuisine": cuisine,
-                "name" : name,
-                "grades" : old_jobs
-
+                "age" : age,
+                "job_title" : job_title,
+                "email" : email,
+                "phone" : phone,
+                "registered" : registered,
+                "picture" : picture,
+                "about" : about,
+                "company": {
+                    "id":companyId,
+                    "name" : companyName
+                },
+                "previous_companies" : old_jobs
             };
 
             client.index({
