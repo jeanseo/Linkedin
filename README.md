@@ -12,6 +12,8 @@ Il permet d'inclure les fichiers Json fournis dans la base elasticSearch.
 
 Enfin, executer : node app.js
 
+adresse de l'appli: http://localhost:3000
+
 FONCTIONNALITES:
 - Recherche dans plusieurs champs (nom, prénom, société, domaine d'activité, poste) depuis la barre de recherche
 - Filtres par sociétés ou employés, par type d'activité ou par métier
@@ -26,3 +28,6 @@ Axes d'amélioration:
 Meilleure gestion des filtres,
 CRUD pour les entreprises
 Gérer la pagination des résultats
+
+
+Dépôt disponible sur https://github.com/jeanseo/Linquedine/
