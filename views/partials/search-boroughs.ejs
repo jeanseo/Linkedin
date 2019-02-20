@@ -1,0 +1,6 @@
+<form id="borough">
+    <%boroughList.forEach((borough)=>{ %>
+        <label><input type="checkbox" name="borough" value="<%=borough.key.toLowerCase()%>"><%=borough.key%>
+            <span class="badge badge-light"><%=borough.doc_count%></span></label>
+    <% }); %>
+</form>

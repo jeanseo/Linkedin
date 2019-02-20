@@ -1,0 +1,72 @@
+<% include partials/crud-header.ejs %>
+<script src="/javascripts/jquery.caret.min.js"></script>
+<script src="/javascripts/jquery.tag-editor.js"></script>
+
+<div class="container">
+    <% if (message) { %>
+        <p class="text-center text-danger"><%= message %></p>
+    <% } %>
+
+    <% if (restaurant) { %>
+        <form class="add-restaurant-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="<%= restaurant.name %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="cuisine" id="cuisine" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="building" id="building" placeholder="Building" value="<%= restaurant.address.building %>" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control" name="street" id="street" placeholder="Street" value="<%= restaurant.address.street %>" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder="Zip Code" value="<%= restaurant.address.zipcode %>" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <select class="custom-select" name="borough">
+                        <% boroughsList.forEach((borough)=>{%>
+                            <% let selected = (restaurant.borough == borough) ? "selected" : "" %>
+                        <option value="<%= borough %>" <%=selected%>><%= borough %></option>
+                        <%});%>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <ul id="form-grades">
+                        <% gradesList.forEach((grade,index)=>{%>
+                        <li>
+                            <input class="form-control" name="grade" type="text" value="<%=grade.grade%>" readonly="true" placeholder="grade" required>
+                            -<input class="form-control" name="score" type="text" value="<%=grade.score%>" readonly="true" placeholder="score" required>
+                            <input name="date" type="hidden" value="<%=grade.date.$date%>">
+                            <button class="remove-grade" type="button">-</button>
+                        </li>
+                    <% }); %>
+                    </ul>
+                    <button id="add-grade" type="button">+</button>
+
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success float-right">Update Restaurant</button>
+        </form>
+    <% } else { %>te
+        <p class="text-center">Restaurant Not Found. Go <a href="/add">here</a> to add restaurants.</p>
+    <% } %>
+</div>
+
+<script type="text/javascript">
+    $(document).ready( function () {
+        $('#cuisine').tagEditor({
+            initialTags: [<% cuisinesList.forEach((cuisine)=>{%>'<%=cuisine%>',<%}); %>],
+            delimiter: '/',
+            placeholder: 'Cuisine',
+            autocomplete: { 'source': '/api/autocomplete-cuisine', minLength: 3 }
+        });
+    });
+</script>
+
+</body>
+</html>

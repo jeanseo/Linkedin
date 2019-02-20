@@ -1,0 +1,8 @@
+<% if (restaurants.length > 0) {%>
+    <ol>
+        <% restaurants.forEach((restaurant, index) => { %>
+            <tr>
+                <li><%= restaurant._source.name %></li>
+        <% }) %>
+    </ol>
+<% }%>

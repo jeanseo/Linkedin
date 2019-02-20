@@ -1,0 +1,9 @@
+<form id="cuisine">
+<%cuisineList.forEach((cuisine)=>{ %>
+    <div class="btn-group-toggle" data-toggle="buttons">
+        <label>
+            <input type="checkbox" name="cuisine" value="<%=cuisine.key.toLowerCase()%>"> <%=cuisine.key%> <span class="badge badge-light"><%=cuisine.doc_count%></span>
+        </label>
+    </div>
+<% }); %>
+</form>
