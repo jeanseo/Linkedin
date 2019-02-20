@@ -33,11 +33,19 @@ $(document).ready( function () {
     });
 
     function search(type,coord){
-        const employeeTemplate = '<li>'
+        const employeeTemplate = '<li class="jumbotron">'
+            +'<img id="picture">'
             +'<h4></h4>'
+            +'<p class="lead"></p>'
+            +'<p id="coordonnees"></p>'
+            +'<p id="about"></p>'
             +'</li>';
-        const companyTemplate = '<li>'
+        const companyTemplate = '<li class="jumbotron" style="background-color:lightblue">'
+            +'<img id="picture">'
             +'<h4></h4>'
+            +'<p class="lead"></p>'
+            +'<p id="coordonnees"></p>'
+            +'<p id="about"></p>'
             +'</li>';
         if (type==="map"){
             $("#coords").val(JSON.stringify(coord));
@@ -62,13 +70,24 @@ $(document).ready( function () {
                 switch (doc._index){
                     case 'employees':
                         li=$(employeeTemplate);
-                        $(li).children("h4").text(doc._source.name.first+" "+doc._source.name.last) ;
+                        $(li).find("h4").text(doc._source.name.first+" "+doc._source.name.last) ;
+                        $(li).find("img").attr("src",doc._source.picture);
+                        $(li).find(".lead").text(doc._source.age+" ans, "+doc._source.job_title+" at "
+                            +doc._source.company.name);
+                        $(li).find("#coordonnees").html("tel: "+doc._source.phone+" - email: <a href=\""+doc._source.email+"\">"
+                            +doc._source.email+"</a>");
+                        $(li).find("#about").text(doc._source.about);
                         $("#result ol").append($(li));
 
                         break;
                     case 'companies':
                         li=$(companyTemplate);
-                        $(li).children("h4").text(doc._source.company) ;
+                        $(li).find("h4").text(doc._source.company) ;
+                        $(li).find("img").attr("src",doc._source.picture);
+                        $(li).find(".lead").text(doc._source.industry+" - "+doc._source.address);
+                        $(li).find("#about").text(doc._source.about);
+                        $(li).find("#coordonnees").html("tel: "+doc._source.phone+" - email: <a href=\""+doc._source.email+"\">"
+                            +doc._source.email+"</a>");
                         $("#result ol").append($(li));
                         markers.push(new L.marker([ doc._source.coord.lat, doc._source.coord.lon ])
                             .addTo(map)

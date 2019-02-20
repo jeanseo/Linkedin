@@ -45,7 +45,7 @@ module.exports = {
         if (req.body.searchText !== ""){
             body.query("multi_match",{
                 query: req.body.searchText+"*",
-                fields: ["name.last^2","name.first","company^5","company.name^2","industry^2","company.industry","job_title"],
+                fields: ["name.last^2","name.first","company^5","company.name^2","industry^2","company.industry","job_title^6"],
                 fuzziness : "auto"
             });
         }
@@ -97,7 +97,7 @@ module.exports = {
                 index = "companies";
                 break;
         }
-        body.size(20);
+        body.size(12);
         let bodyText = body.build();
         console.log(JSON.stringify(bodyText));
         client.search({
