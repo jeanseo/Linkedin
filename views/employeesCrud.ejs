@@ -1,0 +1,52 @@
+<% include partials/crud-header.ejs %>
+<div class="container-fluid">
+    <div class="table-wrapper">
+      <% if (employees.length > 0) {%>
+        <table class="table table-hovered table-striped table-sm" id="restaurants_table">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Job Title</th>
+            <th scope="col">Company</th>
+            <th scope="col">registered</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% employees.forEach((employee, index) => { %>
+            <tr>
+              <td><%= employee._source.name.first%> <%=employee._source.name.last %></td>
+              <td><%= employee._source.job_title %></td>
+              <td><%= employee._source.company.name %></td>
+              <td><%= employee._source.registered %></td>
+              <td><%= employee._source.email %></td>
+              <td><%= employee._source.phone %></td>
+              <td>
+                  <a href="/admin/employees/edit/<%= employee._id %>" rel="noopener" ><i class="material-icons md-18">edit</i></a>
+                  <a href="/admin/employees/delete/<%= employee._id %>" ><i class="material-icons md-18">delete</i></a>
+              </td>
+            </tr>
+          <% }) %>
+          </tbody>
+            <tfoot class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">Company</th>
+                <th scope="col">registered</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Action</th>
+            </tr>
+            </tfoot>
+        </table>
+      <% } else { %>
+        <p class="text-center">No employees found. Go <a href="/admin/employees/add" >here</a> to add employees.</p>
+      <% } %>
+    </div>
+    </div>
+</div>
+</body>
+</html>

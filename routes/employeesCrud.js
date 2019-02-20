@@ -4,7 +4,7 @@ module.exports = {
     let client = require('../connection.js');
     //on récupère le nombre de réponses
     client.search({
-      index: 'restaurants',
+      index: 'employees',
       type: '_doc',
       body: {
         "query": {
@@ -18,7 +18,7 @@ module.exports = {
       }
       else {
         client.search({
-          index: 'restaurants',
+          index: 'employees',
           type: '_doc',
           body: {
             "query": {
@@ -30,9 +30,9 @@ module.exports = {
               if(error){
                 console.log("search error: "+error)
               }else {
-                res.render('crud.ejs', {
-                  title: "RR - Restos Ratings | Edit Restaurants"
-                  ,restaurants  : response.hits.hits
+                res.render('employeesCrud.ejs', {
+                  title: "Linquedine | Manage Employees"
+                  ,employees  : response.hits.hits
                 });
               }
             }

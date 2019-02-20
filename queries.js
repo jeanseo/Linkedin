@@ -2,7 +2,7 @@ module.exports = {
     getItems: (champ,max,callback) => {
         let client = require('./connection.js');
         // client.search({
-        //     index: 'restaurants',
+        //     index: 'employees',
         //     type: '_doc',
         //     body: {
         //         "aggs": {

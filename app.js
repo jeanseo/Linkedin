@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const elasticsearch = require('elasticsearch');
 const path = require('path');
 const app = express();
-const {listEmployees} = require('./routes/crud');
-const { addRestaurant, addRestaurantPage, deleteRestaurant, editRestaurant, editRestaurantPage, getCuisineList} = require('./routes/restaurants');
+const {listEmployees} = require('./routes/employeesCrud');
+const { addEmployeePage, deleteEmployee, editEmployees, editEmployeesPage, getCuisineList} = require('./routes/employees');
 const {searchIndex, searchActionPage} = require('./routes/search');
 const port = 3000;
 
@@ -24,11 +24,11 @@ app.use(fileUpload()); // configure fileupload
 // routes for the app
 
 app.get('/admin/employees', listEmployees);
-app.get('/add', addRestaurantPage);
-app.get('/edit/:id', editRestaurantPage);
-app.get('/delete/:id', deleteRestaurant);
-app.post('/add', editRestaurant);
-app.post('/edit/:id', editRestaurant);
+app.get('/admin/employees/add', addEmployeePage);
+app.get('/admin/employees/edit/:id', editEmployeesPage);
+app.get('/admin/employees/delete/:id', deleteEmployee);
+app.post('/add', editEmployees);
+app.post('/admin/employees/edit/:id', editEmployees);
 app.get('/', searchIndex);
 app.post('/api/search', searchActionPage);
 app.get('/api/autocomplete-cuisine',getCuisineList);
