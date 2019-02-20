@@ -1,5 +1,11 @@
 
 module.exports = {
+    addEmployeePage: (req, res) => {
+        res.render('add-employee.ejs', {
+            title: 'Linquedine | Add new employee'
+            , message: ''
+        });
+    },
     editEmployeesPage: (req, res) => {
         //TODO Gérer les notes, et les coordonnées géographiques, ainsi que le type de cuisine en tags
         let employeeId = req.params.id;
@@ -32,99 +38,93 @@ module.exports = {
         });
     },
     editEmployees: (req, res) => {
-    let name = req.body.name;
-    let cuisine = req.body.cuisine;
-    let building = req.body.building;
-    let street = req.body.street;
-    let zipCode = req.body.zipcode;
-    let borough = req.body.borough;
-    let restaurantId = req.params.id;
+        let first_name = req.body.first_name;
+        let last_name = req.body.last_name;
+        let age = req.body.age;
+        let job_title = req.body.job_title;
+        let email = req.body.email;
+        let phone = req.body.phone;
+        let registered = req.body.registered;
+        let picture = req.body.picture;
+        let about = req.body.about;
+        let companyId = req.body.companyId;
+        let companyName = req.body.companyName;
+        let ids = req.body.id;
+        let old_job_title = req.body.old_job_title;
+        let employeeId = req.params.id;
 
-    //Recuperation des notes dans un tableau
-    let grades=[];
-    if (req.body.grade!=null && req.body.score!=null){
-        if (!Array.isArray(req.body.grade)) {
-            let date=null;
-
-            if(req.body.date===0){
-                date = Date.now();
+        //Recuperation des anciennes sociétés dans un tableau
+        let old_jobs=[];
+        if (ids!=null && old_job_title!=null){
+            if (!Array.isArray(req.body.id)) {
+                old_jobs = {
+                    id: ids,
+                    old_job_title: old_job_title
+                };
             }else{
-                date =  parseInt(req.body.date);
+                req.body.id.forEach((id, index) => {
+                    old_jobs[index] = {
+                        id: ids[index],
+                        job_title: old_job_title[index]
+                        };
+                });
             }
-            grades={
-                date: {
-                    $date: date
-                },
-                grade: req.body.grade,
-                score: req.body.score
+        }
+        const client = require('../connection.js');
+        if(employeeId!==undefined){
+            //update
+            let query = {
+                "doc":{
+                    "name.first" : first_name,
+                    "name.last" : last_name,
+                    "age" : age,
+                    "job_title" : job_title,
+                    "email" : email,
+                    "phone" : phone,
+                    "registered" : registered,
+                    "picture" : picture,
+                    "about" : about,
+                    "company.id" : companyId,
+                    "company.name" : companyName,
+                    "previous_companies" : old_jobs
+                }
             };
 
-        }else{
-            let date=null;
-            req.body.grade.forEach((grade, index) => {
-                if(req.body.date[index]===0){
-                    date = Date.now();
-                }else{
-                    date =  parseInt(req.body.date[index]);
-                }
-                grades[index] = {
-                    date: {
-                        $date: date
-                    },
-                    grade: grade,
-                    score: req.body.score[index]
-                    };
+            client.update({
+                index: 'employees',
+                type: "_doc",
+                id:employeeId,
+                body: query
+            },function(err,resp,status) {
+                console.log(resp);
+                //return res.status(500).send(err);
             });
-        }
-    }
-    const client = require('../connection.js');
-    if(restaurantId!==undefined){
-        let query = {
-            "doc":{
-                "address.building": building,
-                "address.street": street,
-                "address.zipcode": zipCode,
+        }else{
+            //ajout
+            let query = {
+                "address": {
+                    "building":building,
+                    "street" : street,
+                    "zipcode" : zipCode
+                },
                 "borough": borough,
                 "cuisine": cuisine,
                 "name" : name,
-                "grades" : grades
-            }
-        };
+                "grades" : old_jobs
 
-        client.update({
-            index: 'employees',
-            type: "_doc",
-            id:restaurantId,
-            body: query
-        },function(err,resp,status) {
-            console.log(resp);
-            //return res.status(500).send(err);
-        });
-    }else{
-        let query = {
-            "address": {
-                "building":building,
-                "street" : street,
-                "zipcode" : zipCode
-            },
-            "borough": borough,
-            "cuisine": cuisine,
-            "name" : name,
-            "grades" : grades
+            };
 
-        };
+            client.index({
+                index: 'employees',
+                type: '_doc',
+                body: query
+            },function(err,resp,status) {
+                console.log(resp);
+                //return res.status(500).send(err);
+            });
+        }
 
-        client.index({
-            index: 'employees',
-            type: '_doc',
-            body: query
-        },function(err,resp,status) {
-            console.log(resp);
-            //return res.status(500).send(err);
-        });
-    }
-
-    res.redirect('/admin/employees');
+        res.redirect('/admin/employees');
 
     },
 

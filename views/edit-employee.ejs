@@ -7,61 +7,73 @@
         <p class="text-center text-danger"><%= message %></p>
     <% } %>
 
-    <% if (restaurant) { %>
+    <% if (employee) { %>
         <form class="edit-employee-form" action="" method="post" enctype="multipart/form-data">
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name" value="<%= employee.name.first %>" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" value="<%= employee.name.last %>" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="age" id="age" placeholder="Age" value="<%= employee.age %>" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="job_title" id="job_title" placeholder="Job Title" value="<%= employee.job_title %>" required>
+                </div>
+                <!--
+                <div class="form-group col-md-3">
                     <input type="text" class="form-control" name="cuisine" id="cuisine" required>
                 </div>
-
+                -->
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="email" id="email" placeholder="Email" value="<%= employee.email %>" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone" value="<%= employee.phone %>" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="registered" id="registered" placeholder="Registration date" value="<%= employee.registered %>" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="picture" id="picture" placeholder="Picture URL" value="<%= employee.picture %>" >
+                </div>
+                <div class="form-group col-md-12">
+                    <textarea rows="4" class="form-control" name="about" id="about" placeholder="About..." ><%= employee.about %></textarea>
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="text" class="form-control" name="companyId" id="companyId" placeholder="Company ID" value="<%= employee.company.id %>" >
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="companyName" id="companyName" placeholder="Company Name" value="<%= employee.company.name %>" >
+                </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control" name="street" id="street" placeholder="Street" value="<%= employee.name.first %>" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder="Zip Code" value="<%= employee.name.first %>" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <select class="custom-select" name="borough">
-                        <% boroughsList.forEach((borough)=>{%>
-                            <% let selected = (restaurant.borough == borough) ? "selected" : "" %>
-                        <option value="<%= borough %>" <%=selected%>><%= borough %></option>
-                        <%});%>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <ul id="form-grades">
-                        <% gradesList.forEach((grade,index)=>{%>
-                        <li>
-                            <input class="form-control" name="grade" type="text" value="<%=grade.grade%>" readonly="true" placeholder="grade" required>
-                            -<input class="form-control" name="score" type="text" value="<%=grade.score%>" readonly="true" placeholder="score" required>
-                            <input name="date" type="hidden" value="<%=grade.date.$date%>">
-                            <button class="remove-grade" type="button">-</button>
+                <div class="form-group col">
+                    <ul id="form-grades" class="list-inline">
+                        <% companiesList.forEach((company,index)=>{%>
+                        <li class="list-inline-item col-3">
+                            <input class="form-control " name="id" type="text" value="<%=company.id%>" placeholder="id" required>
+                            <input class="form-control " name="old_job_title" type="text" value="<%=company.job_title%>" placeholder="Job Title" required>
+                            <button class="remove-grade btn" type="button">-</button>
                         </li>
                     <% }); %>
                     </ul>
-                    <button id="add-grade" type="button">+</button>
-
+                    <button class="btn" id="add-grade" type="button">+</button>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success float-right">Update Restaurant</button>
+            <button type="submit" class="btn btn-success float-right">Update Employee</button>
         </form>
     <% } else { %>te
-        <p class="text-center">Restaurant Not Found. Go <a href="/add">here</a> to add restaurants.</p>
+        <p class="text-center">Employee Not Found. Go <a href="admin/employees/add">here</a> to add employees.</p>
     <% } %>
 </div>
 
 <script type="text/javascript">
     $(document).ready( function () {
         $('#cuisine').tagEditor({
-            initialTags: [<% cuisinesList.forEach((cuisine)=>{%>'<%=cuisine%>',<%}); %>],
+            initialTags: [<% companiesList.forEach((company)=>{%>'<%=company%>',<%}); %>],
             delimiter: '/',
             placeholder: 'Cuisine',
             autocomplete: { 'source': '/api/autocomplete-cuisine', minLength: 3 }

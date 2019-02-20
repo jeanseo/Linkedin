@@ -1,0 +1,65 @@
+<% include partials/crud-header.ejs %>
+<script src="/javascripts/jquery.caret.min.js"></script>
+<script src="/javascripts/jquery.tag-editor.js"></script>
+
+<div class="container">
+    <% if (message) { %>
+        <p class="text-center text-danger"><%= message %></p>
+    <% } %>
+
+        <form class="edit-employee-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name"  required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name"  required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="age" id="age" placeholder="Age"  required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="job_title" id="job_title" placeholder="Job Title"  required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="email" id="email" placeholder="Email"  required>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone"  required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="registered" id="registered" placeholder="Registration date" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="picture" id="picture" placeholder="Picture URL" >
+                </div>
+                <div class="form-group col-md-12">
+                    <textarea rows="4" class="form-control" name="about" id="about" placeholder="About..." ></textarea>
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="text" class="form-control" name="companyId" id="companyId" placeholder="ID Company" required >
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" name="companyName" id="companyName" placeholder="Company Name" required >
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <ul id="form-grades" class="list-inline">
+                        <li class="list-inline-item col-3">
+                            <input class="form-control " name="id" type="text" placeholder="id" required>
+                            <input class="form-control " name="old_job_title" type="text" placeholder="Job Title" required>
+                            <button class="remove-grade btn" type="button">-</button>
+                        </li>
+                    </ul>
+                    <button class="btn" id="add-grade" type="button">+</button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success float-right">Add Employee</button>
+        </form>
+</div>
+
+
+
+</body>
+</html>
